@@ -17,7 +17,6 @@ class AuthPage extends StatelessWidget {
           if (snapshot.hasData) {
             return HomePage();
           }
-
           // user is Not logged in
           else {
             return LoginPage();
@@ -27,3 +26,14 @@ class AuthPage extends StatelessWidget {
     );
   }
 }
+
+// FirebaseAuth.instance
+//   .authStateChanges()
+//   .listen((User? user) {
+//     if (user == null) {
+//       print('User is currently signed out!');
+//     } else {
+//       print('User is signed in!');
+//     }
+//   });
+
