@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/pages/login_page.dart';
 
 import 'home_page.dart';
+import 'login_or_register_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -19,21 +20,10 @@ class AuthPage extends StatelessWidget {
           }
           // user is Not logged in
           else {
-            return LoginPage();
+            return const LoginOrRegisterPage();
           }
         },
       ),
     );
   }
 }
-
-// FirebaseAuth.instance
-//   .authStateChanges()
-//   .listen((User? user) {
-//     if (user == null) {
-//       print('User is currently signed out!');
-//     } else {
-//       print('User is signed in!');
-//     }
-//   });
-

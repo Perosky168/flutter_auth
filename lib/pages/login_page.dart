@@ -1,5 +1,3 @@
-// import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/widgets/my_button.dart';
@@ -7,7 +5,8 @@ import 'package:flutter_auth/widgets/my_textfield.dart';
 import 'package:flutter_auth/widgets/square_tile.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final Function()? onTap;
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -28,23 +27,16 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
 
-    void wrongEmailMessage() {
+    void showErrorMessage(String message) {
       showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
-            title: Text('Incorrect Password'),
-          );
-        },
-      );
-    }
-
-    void wrongPasswordMessage() {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Incorrect Password'),
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                message,
+              ),
+            ),
           );
         },
       );
@@ -60,11 +52,10 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
-      print(e.code);
       if (e.code == 'user-not-found') {
-        wrongEmailMessage();
+        showErrorMessage(e.code);
       } else if (e.code == 'Wrong-password') {
-        wrongPasswordMessage();
+        showErrorMessage(e.code);
       }
     }
   }
@@ -75,8 +66,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body: SafeArea(
-          child: ClipRRect(
-            child: Center(
+          child: Center(
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -121,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   MyButton(
                     onTap: signUserIn,
+                    buttonName: 'Sign in',
                   ),
                   const SizedBox(height: 50),
 
@@ -166,11 +158,14 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       const SizedBox(width: 4),
-                      const Text(
-                        'Register now',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: const Text(
+                          'Register now',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       )
                     ],
